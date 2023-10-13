@@ -22,6 +22,11 @@
         #map {
             height: 200px;
         }
+
+        .leaflet-control-attribution,
+        .leaflet-control {
+            display: none;
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -66,16 +71,47 @@
 
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
+            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+            var circle = L.circle([position.coords.latitude, position.coords.longitude], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 20
+            }).addTo(map);
         }
 
         function errorCallback(position) {
 
         }
+
+        $('#takeabsen').click(function(e){
+            Webcam.snap(function(uri){
+                image = uri;
+            });
+            var lokasi = $('#lokasi').val();
+            alert(lokasi);
+            $.ajax({
+                type: 'POST',
+                url: '/presensi/store',
+                data : {
+                    _token: '{{ csrf_token() }}',
+                    image : image,
+                    lokasi : lokasi,
+                },
+                cache: false,
+                success:function(respond){
+                    if(respond == 0) {
+                        alert('Berhasil Simpan Data');
+                    } else {
+                        alert('Gagal Simpan Data');
+                    }
+                }
+            })
+        })
     </script>
 @endpush

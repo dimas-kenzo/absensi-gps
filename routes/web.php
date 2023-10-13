@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PresensiController;
 
 /*
@@ -33,6 +32,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/presensi-create', [PresensiController::class, 'create'])->name('presensi.create');
+    Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
 });
 
 Route::middleware('auth')->group(function () {
