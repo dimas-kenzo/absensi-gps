@@ -58,16 +58,17 @@
                 </div>
                 <div class="item-menu text-center">
                     <div class="menu-icon">
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
                             <ion-icon name="log-out" class="orange" style="font-size: 40px;"></ion-icon>
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </div>
                     <div class="menu-name">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item">
-                                <i class="fas fa-sign-out-alt mr-2"></i>
-                                Keluar
-                            </button>
-                        </form>
+                        Keluar
                     </div>
                 </div>
             </div>
@@ -86,7 +87,7 @@
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Masuk</h4>
-                                <span>07:00</span>
+                                <span>{{ $presensiHariIni != null ? $presensiHariIni->check_in_time : 'Belum Absen'  }}</span>
                             </div>
                         </div>
                     </div>
@@ -101,7 +102,7 @@
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Pulang</h4>
-                                <span>12:00</span>
+                                <span>{{ $presensiHariIni != null && $presensiHariIni->check_out_time != null ? $presensiHariIni->check_out_time : 'Belum Absen'  }}</span>
                             </div>
                         </div>
                     </div>
@@ -110,7 +111,7 @@
         </div>
     </div>
 
-    <div class="rekappresence">
+    {{-- <div class="rekappresence">
         <div id="chartdiv"></div>
         <!-- <div class="row">
             <div class="col-6">
@@ -176,7 +177,7 @@
                 </div>
             </div>
         </div> -->
-    </div>
+    </div> --}}
     <div class="presencetab mt-2">
         <div class="tab-pane fade show active" id="pilled" role="tabpanel">
             <ul class="nav nav-tabs style1" role="tablist">
