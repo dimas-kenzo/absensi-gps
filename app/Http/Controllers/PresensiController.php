@@ -22,22 +22,30 @@ class PresensiController extends Controller
         $email = Auth::guard('web')->user()->email;
         $attendance_date = date('Y-m-d');
         $jam = date('H:i:s');
-        $latitudeKantor = -7.625701513405246;
-        $longitudeKantor = 109.58423696713866;
+        $latitudeKantor = -7.6706688716518;
+        $longitudeKantor = 109.66083880761339;
+        // $latitudeKantor = -7.625701513405246;
+        // $longitudeKantor = 109.58423696713866;
         $lokasi = $request->lokasi;
         $lokasiuser = explode(',', $lokasi);
         $latitudeUser = $lokasiuser[0];
         $longitudeUser = $lokasiuser[1];
         $jarak = $this->distance($latitudeKantor, $longitudeKantor, $latitudeUser, $longitudeUser);
         $radius = round($jarak['meters']);
+
+        $check = DB::table('presensi')->where('attendance_date', $attendance_date)->where('email', $email)->count();
+        if($check > 0){
+            $ket = "out";
+        } else {
+            $ket = "in";
+        }
         $image = $request->image;
         $folderPath = 'public/uploads/absensi/';
-        $formatName = $email . "-" . $attendance_date;
+        $formatName = $email . "-" . $attendance_date . "-" .$ket;
         $image_parts = explode(';base64', $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
         $file = $folderPath . $fileName;
-        $check = DB::table('presensi')->where('attendance_date', $attendance_date)->where('email', $email)->count();
 
         if ($radius > 65) {
             echo "error|Maaf Anda Berada Diluar Radius, Jarak Anda " . $radius . " meter dari Kantor|radius";
@@ -73,6 +81,9 @@ class PresensiController extends Controller
             }
         }
     }
+
+    
+
 
 
     //Menghitung Jarak
