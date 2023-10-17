@@ -1,22 +1,31 @@
 @extends('layouts.presensi')
 @section('header')
 <style>
-    .lingkaran-kecil {
-    /* border-radius: 100%;  */
-    max-width: 50px; /* Mengubah ukuran gambar menjadi kecil */
-    height: auto; /* Menghindari distorsi gambar */
-}
+    .notif-rekap {
+        position: absolute;
+        top: 3px;
+        right: 10px;
+        font-size: 0.5rem;
+        z-index: 999;
+    }
 </style>
 @endsection
 @section('content')
 <div class="section" id="user-section">
     <div id="user-detail">
         <div class="avatar">
-            <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="avatar" class="imaged w64 rounded">
+            @if (!empty(Auth::guard('web')->user()->photo))
+                @php
+                    $path = Storage::url('uploads/users/'.Auth::guard('web')->user()->photo)
+                @endphp
+                <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded">
+            @else
+                <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="avatar" class="imaged w64 rounded">
+            @endif
         </div>
         <div id="user-info">
-            <h2 id="user-name">Adam Abdi Al A'la</h2>
-            <span id="user-role">Head of IT</span>
+            <h2 id="user-name">{{ Auth::guard('web')->user()->name }}</h2>
+            <span id="user-role">{{ Auth::guard('web')->user()->position }}</span>
         </div>
     </div>
 </div>
@@ -91,7 +100,7 @@
                 <div class="card gradasigreen">
                     <div class="card-body">
                         <div class="presencecontent">
-                            <div class="iconpresence">
+                            <div class="iconpresence mx-2">
                                 @if ($presensiHariIni)
                                     @php
                                         $path = Storage::url('uploads/absensi/'.$presensiHariIni->photo_in)
@@ -113,7 +122,7 @@
                 <div class="card gradasired">
                     <div class="card-body">
                         <div class="presencecontent">
-                            <div class="iconpresence">
+                            <div class="iconpresence mx-2">
                                 @if ($presensiHariIni != null && $presensiHariIni->check_out_time != null)
                                     @php
                                         $path = Storage::url('uploads/absensi/'.$presensiHariIni->photo_out)
@@ -201,6 +210,48 @@
             </div>
         </div> -->
     </div> --}}
+
+    <div class="rekapPresensi">
+        <h3>Rekap Presensi {{ $namaBulan[$bulanIni] }} {{ $tahunIni }} </h3>
+        <div class="row">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding: 12px 12px !important">
+                        <span class="badge bg-danger notif-rekap">{{ $rekapPresensi->jmlHadir }}</span>
+                        <ion-icon name="happy-outline" style="font-size: 1.5rem" class="text-primary"></ion-icon><br>
+                        <span style="font-size: 0.8rem">Hadir</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding: 12px 12px !important">
+                        <span class="badge bg-danger notif-rekap">0</span>
+                        <ion-icon name="reader-outline" style="font-size: 1.5rem" class="text-success"></ion-icon><br>
+                        <span style="font-size: 0.8rem">Izin</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding: 12px 12px !important">
+                        <span class="badge bg-danger notif-rekap">30</span>
+                        <ion-icon name="medkit-outline" style="font-size: 1.5rem" class="text-danger"></ion-icon><br>
+                        <span style="font-size: 0.8rem">Sakit</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body text-center" style="padding: 12px 12px !important">
+                        <span class="badge bg-danger notif-rekap">{{ $rekapPresensi->jmlTelat }}</span>
+                        <ion-icon name="alarm-outline" style="font-size: 1.5rem" class="text-warning"></ion-icon><br>
+                        <span style="font-size: 0.8rem">Telat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="presencetab mt-2">
         <div class="tab-pane fade show active" id="pilled" role="tabpanel">
             <ul class="nav nav-tabs style1" role="tablist">
@@ -221,7 +272,7 @@
                 <ul class="listview image-listview">
                     @foreach ($historiBulanIni as $h)
                     @php
-                        $path = Storage::url('uploads/absensi/'.$presensiHariIni->photo_in)
+                        $path = Storage::url('uploads/absensi/'.$h->photo_in)
                     @endphp
                     <li>
                         <div class="item">
@@ -244,48 +295,20 @@
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel">
                 <ul class="listview image-listview">
+                    @foreach ($leaderboard as $l)
                     <li>
                         <div class="item">
                             <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="image" class="image">
                             <div class="in">
-                                <div>Edward Lindgren</div>
-                                <span class="text-muted">Designer</span>
+                                <div>
+                                    <b>{{ $l->name }}</b> <br>
+                                    <small class="text-muted">{{ $l->position }}</small>
+                                </div>
+                                <span class="badge {{ $l->check_in_time < "07.00" ? "bg-success" : "bg-danger" }}">{{ $l->check_in_time }}</span>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="item">
-                            <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="image" class="image">
-                            <div class="in">
-                                <div>Emelda Scandroot</div>
-                                <span class="badge badge-primary">3</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="image" class="image">
-                            <div class="in">
-                                <div>Henry Bove</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="image" class="image">
-                            <div class="in">
-                                <div>Henry Bove</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item">
-                            <img src="{{ asset('assets/img/sample/avatar/avatar1.jpg') }}" alt="image" class="image">
-                            <div class="in">
-                                <div>Henry Bove</div>
-                            </div>
-                        </div>
-                    </li>
+                    @endforeach
                 </ul>
             </div>
 

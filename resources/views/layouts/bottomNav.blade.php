@@ -26,7 +26,7 @@
             <strong>Docs</strong>
         </div>
     </a>
-    <a href="javascript:;" class="item">
+    <a href="{{ route('presensi.edit') }}" class="item">
         <div class="col">
             <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
             <strong>Profile</strong>

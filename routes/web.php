@@ -31,8 +31,10 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/presensi-create', [PresensiController::class, 'create'])->name('presensi.create');
+    Route::get('/presensi/create', [PresensiController::class, 'create'])->name('presensi.create');
     Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
+    Route::get('/presensi/edit', [PresensiController::class, 'editProfile'])->name('presensi.edit');
+    Route::post('/presensi/{id}/updateProfile', [PresensiController::class, 'updateProfile'])->name('presensi.update');
 });
 
 Route::middleware('auth')->group(function () {

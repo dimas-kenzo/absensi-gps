@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 
 class PresensiController extends Controller
 {
@@ -22,10 +25,10 @@ class PresensiController extends Controller
         $email = Auth::guard('web')->user()->email;
         $attendance_date = date('Y-m-d');
         $jam = date('H:i:s');
-        $latitudeKantor = -7.6706688716518;
-        $longitudeKantor = 109.66083880761339;
-        // $latitudeKantor = -7.625701513405246;
-        // $longitudeKantor = 109.58423696713866;
+        // $latitudeKantor = -7.6706688716518;
+        // $longitudeKantor = 109.66083880761339;
+        $latitudeKantor = -7.625701513405246;
+        $longitudeKantor = 109.58423696713866;
         $lokasi = $request->lokasi;
         $lokasiuser = explode(',', $lokasi);
         $latitudeUser = $lokasiuser[0];
@@ -34,14 +37,14 @@ class PresensiController extends Controller
         $radius = round($jarak['meters']);
 
         $check = DB::table('presensi')->where('attendance_date', $attendance_date)->where('email', $email)->count();
-        if($check > 0){
+        if ($check > 0) {
             $ket = "out";
         } else {
             $ket = "in";
         }
         $image = $request->image;
         $folderPath = 'public/uploads/absensi/';
-        $formatName = $email . "-" . $attendance_date . "-" .$ket;
+        $formatName = $email . "-" . $attendance_date . "-" . $ket;
         $image_parts = explode(';base64', $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
@@ -82,10 +85,6 @@ class PresensiController extends Controller
         }
     }
 
-    
-
-
-
     //Menghitung Jarak
     public function distance($lat1, $lon1, $lat2, $lon2)
     {
@@ -100,4 +99,92 @@ class PresensiController extends Controller
         $meters = $kilometers * 1000;
         return compact('meters');
     }
+
+    public function editProfile()
+    {
+        $email = Auth::guard('web')->user()->email;
+        $users = DB::table('users')->where('email', $email)->first();
+        return view('presensi.editProfile', compact('users'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $email = Auth::guard('web')->user()->email;
+        $name = $request->name;
+        $position = $request->position;
+        $position = $request->position;
+        $no_hp = $request->no_hp;
+        $password = Hash::make($request->password);
+
+        $user = DB::table('users')->where('email', $email)->first();
+
+        if($request->hasFile('photo')){
+            $photo = $email.".".$request->file('photo')->getClientOriginalExtension();
+        } else {
+            $photo = $user->photo;
+        }
+
+        if (empty($request->password)) {
+            $data = [
+                'name' => $name,
+                'position' => $position,
+                'no_hp' => $no_hp,
+                'photo' => $photo
+            ];
+        } else {
+            $data = [
+                'name' => $name,
+                'position' => $position,
+                'no_hp' => $no_hp,
+                'password' => $password,
+                'photo' => $photo
+            ];
+        }
+
+        $update = DB::table('users')->where('email', $email)->update($data);
+
+        // if ($update) {
+        //     return redirect()->route('dashboard');
+        // } else {
+        //     return redirect()->back();
+        // }
+
+        if ($update) {
+            if($request->hasFile('photo')){
+                $folderPath = "public/uploads/users/";
+                $request->file('photo')->storeAs($folderPath, $photo);
+            }
+            return redirect()->back()->with(['success' => 'Data Berhasil Di Update']);
+        } else {
+            return redirect()->back()->with(['error' => 'Data Gagal Di Update']);
+        }
+
+    }
+
+    // public function updateProfile(Request $request)
+    // {
+    //     $email = Auth::guard('web')->user()->email;
+    //     $name = $request->name;
+    //     $position = $request->position;
+    //     $no_hp = $request->no_hp;
+    //     $password = $request->password; // Ambil password dari permintaan tanpa hashing.
+
+    //     $data = [
+    //         'name' => $name,
+    //         'position' => $position,
+    //         'no_hp' => $no_hp,
+    //     ];
+
+    //     if (!empty($password)) {
+    //         $data['password'] = Hash::make($password); // Hanya hash password jika ada perubahan.
+    //     }
+
+    //     $update = DB::table('users')->where('email', $email)->update($data);
+
+    //     if ($update) {
+    //         return redirect()->back()->with(['success' => 'Data Berhasil Di Update']);
+    //     } else {
+    //         return redirect()->back()->with(['error' => 'Data Gagal Di Update']);
+    //     }
+    // }
 }
