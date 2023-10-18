@@ -187,4 +187,59 @@ class PresensiController extends Controller
     //         return redirect()->back()->with(['error' => 'Data Gagal Di Update']);
     //     }
     // }
+
+    public function history() {
+        $namaBulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+        return view ('presensi.history', compact('namaBulan'));
+    }
+
+    public function getHistory(Request $request) {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $email = Auth::guard('web')->user()->email;
+
+        $history = DB::table('presensi')
+            ->whereRaw('MONTH(attendance_date)="'.$bulan.'"')
+            ->whereRaw('YEAR(attendance_date)="'.$tahun.'"')
+            ->where('email',$email)
+            ->orderBy('attendance_date')
+            ->get();
+
+        return view('presensi.gethistory', compact('history'));
+    }
+
+    public function izin() 
+    {
+        $user_id = Auth::id();
+        $dataizin = DB::table('izin')->where('user_id', $user_id)->get();
+        return view('presensi.izin', compact('dataizin'));
+    }
+
+    public function buatIzin()
+    {
+        return view('presensi.buatizin');
+    }
+
+    public function storeIzin(Request $request)
+    {
+        $user_id = Auth::id();
+        $tgl_izin = $request->tgl_izin;
+        $status = $request->status;
+        $keterangan = $request->keterangan;
+
+        $data = [
+            'user_id' => $user_id,
+            'tgl_izin' => $tgl_izin,
+            'status' => $status,
+            'keterangan' => $keterangan
+        ];
+
+        $simpan = DB::table('izin')->insert($data);
+
+        if($simpan){
+            return redirect()->route('presensi.izin')->with('success','Data Berhasil Di Simpan');
+        } else {
+            return redirect()->route('presensi.buatizin')->with('error','Data Gagal Di Simpan');
+        }
+    }
 }

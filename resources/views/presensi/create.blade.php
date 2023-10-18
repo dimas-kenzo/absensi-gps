@@ -139,7 +139,7 @@
                             text: status[1],
                             icon: 'success',
                             confirmButtonText: 'OK'
-                        })
+                        });
                         setTimeout(function() {
                             location.href = '{{ route('dashboard') }}';
                         }, 3000);

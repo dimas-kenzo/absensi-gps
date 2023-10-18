@@ -14,6 +14,7 @@ class DashboardController extends Controller
         $bulanIni = date("m");
         $tahunIni = date("Y");
         $email = Auth::guard('web')->user()->email;
+        $user_id = Auth::id();
         $presensiHariIni = DB::table('presensi')->where('email',$email)->where('attendance_date',$hariIni)->first();
 
         $historiBulanIni = DB::table('presensi')
@@ -36,8 +37,16 @@ class DashboardController extends Controller
             ->orderBy('check_in_time')
             ->get();
 
+        $rekapIzin = DB::table('izin')
+            ->selectRaw('SUM(IF(status="I",1,0)) as jmlIzin, SUM(IF(status="S",1,0)) as jmlSakit')
+            ->where('user_id',$user_id)
+            ->whereRaw('MONTH(tgl_izin)="'.$bulanIni.'"')
+            ->whereRaw('YEAR(tgl_izin)="'.$tahunIni.'"')
+            ->where('status_approved', 1)
+            ->first();
+
         $namaBulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-        return view('dashboard.dashboard', compact('presensiHariIni', 'historiBulanIni', 'namaBulan', 'bulanIni', 'tahunIni', 'rekapPresensi', 'leaderboard'));
+        return view('dashboard.dashboard', compact('presensiHariIni', 'historiBulanIni', 'namaBulan', 'bulanIni', 'tahunIni', 'rekapPresensi', 'leaderboard', 'rekapIzin'));
     }
 
     // public function index() 

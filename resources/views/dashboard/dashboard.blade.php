@@ -226,16 +226,16 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center" style="padding: 12px 12px !important">
-                        <span class="badge bg-danger notif-rekap">0</span>
+                        <span class="badge bg-danger notif-rekap">{{ $rekapIzin->jmlIzin }}</span>
                         <ion-icon name="reader-outline" style="font-size: 1.5rem" class="text-success"></ion-icon><br>
-                        <span style="font-size: 0.8rem">Izin</span>
+                        <span style="font-size: 0.8rem">Ijin</span>
                     </div>
                 </div>
             </div>
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center" style="padding: 12px 12px !important">
-                        <span class="badge bg-danger notif-rekap">30</span>
+                        <span class="badge bg-danger notif-rekap">{{ $rekapIzin->jmlSakit }}</span>
                         <ion-icon name="medkit-outline" style="font-size: 1.5rem" class="text-danger"></ion-icon><br>
                         <span style="font-size: 0.8rem">Sakit</span>
                     </div>
