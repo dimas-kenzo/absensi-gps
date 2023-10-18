@@ -31,6 +31,7 @@
         </div>
     </a>
 </div> --}}
+{{-- Atau --}}
 <div class="appBottomMenu">
     <a href="{{ route('dashboard') }}" class="item {{ Request::is('dashboard') ? 'active' : '' }}">
         <div class="col">
