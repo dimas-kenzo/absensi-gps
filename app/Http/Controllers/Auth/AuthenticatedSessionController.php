@@ -20,32 +20,35 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
-    public function createAdmin(): View
-    {
-        return view('auth.loginadmin');
-    }    
-
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // $request->authenticate();
+        // $request->session()->regenerate();
         // dd($request);
-        $request->authenticate();
+        // return redirect()->intended(RouteServiceProvider::HOME);
 
-        $request->session()->regenerate();
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $data = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+        if (Auth::attempt($data, $request->remember)) {
+            $request->session()->regenerate();
+            $user = Auth::guard('web')->user()->role_id;
+            if ($user != 1) {
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->route('dashboard.admin');
+            }
+        } else {
+            return redirect()->route('login')->with('failed', 'Email atau Password salah');
+        }
     }
 
-
-    // public function sukses(){
-    //     return view('dashboard.dashboard');
-    // }
-
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

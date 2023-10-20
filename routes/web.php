@@ -8,14 +8,12 @@ use App\Http\Controllers\PresensiController;
 require __DIR__.'/auth.php';
 
 
-
-// Route::get('/panel', function () { return view ('auth.loginadmin'); });
-Route::middleware(['role:admin', 'auth', 'verified'])->group(function () {
+Route::middleware(['role:admin', 'auth'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin'])->name('dashboard.admin');
 });
 
-Route::get('/', function () { return view('auth.login'); });
-Route::middleware(['role:guest', 'auth', 'verified'])->group(function () {
+
+Route::middleware(['role:guest','auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/presensi/create', [PresensiController::class, 'create'])->name('presensi.create');
     Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
@@ -27,4 +25,8 @@ Route::middleware(['role:guest', 'auth', 'verified'])->group(function () {
     Route::get('/presensi/buatizin', [PresensiController::class, 'buatIzin'])->name('presensi.buatizin');
     Route::post('/presensi/storeizin', [PresensiController::class, 'storeIzin'])->name('presensi.storeizin');
 });
+
+
+
+Route::get('/', function () { return view('auth.login'); });
 

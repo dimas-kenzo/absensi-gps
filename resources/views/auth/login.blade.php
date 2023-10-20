@@ -107,7 +107,7 @@
 
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password1" placeholder="Password" name="password">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Password" name="password">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
