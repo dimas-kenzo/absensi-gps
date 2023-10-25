@@ -118,8 +118,8 @@ class PresensiController extends Controller
 
         $user = DB::table('users')->where('email', $email)->first();
 
-        if($request->hasFile('photo')){
-            $photo = $email.".".$request->file('photo')->getClientOriginalExtension();
+        if ($request->hasFile('photo')) {
+            $photo = $email . "." . $request->file('photo')->getClientOriginalExtension();
         } else {
             $photo = $user->photo;
         }
@@ -150,7 +150,7 @@ class PresensiController extends Controller
         // }
 
         if ($update) {
-            if($request->hasFile('photo')){
+            if ($request->hasFile('photo')) {
                 $folderPath = "public/uploads/users/";
                 $request->file('photo')->storeAs($folderPath, $photo);
             }
@@ -158,7 +158,6 @@ class PresensiController extends Controller
         } else {
             return redirect()->back()->with(['error' => 'Data Gagal Di Update']);
         }
-
     }
 
     // public function updateProfile(Request $request)
@@ -188,27 +187,29 @@ class PresensiController extends Controller
     //     }
     // }
 
-    public function history() {
-        $namaBulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-        return view ('presensi.history', compact('namaBulan'));
+    public function history()
+    {
+        $namaBulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('presensi.history', compact('namaBulan'));
     }
 
-    public function getHistory(Request $request) {
+    public function getHistory(Request $request)
+    {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $email = Auth::guard('web')->user()->email;
 
         $history = DB::table('presensi')
-            ->whereRaw('MONTH(attendance_date)="'.$bulan.'"')
-            ->whereRaw('YEAR(attendance_date)="'.$tahun.'"')
-            ->where('email',$email)
+            ->whereRaw('MONTH(attendance_date)="' . $bulan . '"')
+            ->whereRaw('YEAR(attendance_date)="' . $tahun . '"')
+            ->where('email', $email)
             ->orderBy('attendance_date')
             ->get();
 
         return view('presensi.gethistory', compact('history'));
     }
 
-    public function izin() 
+    public function izin()
     {
         $user_id = Auth::id();
         $dataizin = DB::table('izin')->where('user_id', $user_id)->get();
@@ -236,10 +237,27 @@ class PresensiController extends Controller
 
         $simpan = DB::table('izin')->insert($data);
 
-        if($simpan){
-            return redirect()->route('presensi.izin')->with('success','Data Berhasil Di Simpan');
+        if ($simpan) {
+            return redirect()->route('presensi.izin')->with('success', 'Data Berhasil Di Simpan');
         } else {
-            return redirect()->route('presensi.buatizin')->with('error','Data Gagal Di Simpan');
+            return redirect()->route('presensi.buatizin')->with('error', 'Data Gagal Di Simpan');
         }
+    }
+
+    public function monitoring()
+    {
+        return view('presensi.monitoring');
+    }
+
+    public function presensi(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $presensi = DB::table('presensi')
+        ->select('presensi.*', 'users.nik', 'users.name','users.position')
+            ->join('users', 'presensi.email', '=', 'users.email')
+            ->where('presensi.attendance_date', $tanggal)
+            ->get();
+
+        return view('presensi.getpresensi', compact('presensi'));
     }
 }

@@ -15,6 +15,8 @@ Route::middleware(['role:admin', 'auth'])->group(function () {
     Route::post('/users/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/edit/{nik}', [UserController::class, 'update'])->name('users.update');
     Route::post('/users/delete/{nik}', [UserController::class, 'delete'])->name('users.delete');
+    Route::get('/presensi-monitoring', [PresensiController::class, 'monitoring'])->name('presensi.monitoring');
+    Route::post('/getpresensi', [PresensiController::class, 'presensi'])->name('get.presensi');
 });
 
 

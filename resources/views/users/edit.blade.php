@@ -135,7 +135,7 @@
                 @if ($user->photo)
                     <img src="{{ asset('storage/uploads/users/' . $user->photo) }}" alt="Foto">
                 @else
-                    <img src="{{ asset('path-ke-foto-default.jpg') }}" alt="Foto Default">
+                    <img src="{{ asset('storage/uploads/no-image/no-image.png') }}" alt="Foto Default">
                 @endif
                 <input type="hidden" class="form-control" name="old_photo" value="{{ $user->photo }}">
             </div>

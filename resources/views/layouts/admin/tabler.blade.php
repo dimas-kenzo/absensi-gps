@@ -19,6 +19,7 @@
     <link href="{{ asset('tabler/dist/css/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset('tabler/dist/css/tabler-vendors.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset('tabler/dist/css/demo.min.css?1692870487') }}" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
     <style>
       @import url('https://rsms.me/inter/inter.css');
       :root {
@@ -28,6 +29,7 @@
       	font-feature-settings: "cv03", "cv04", "cv11";
       }
     </style>
+    @yield('css')
   </head>
   <body >
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
@@ -2120,6 +2122,8 @@
      --}}
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
     @stack('js')
   </body>
 </html>
