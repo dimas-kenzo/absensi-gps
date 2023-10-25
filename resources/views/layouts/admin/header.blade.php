@@ -158,7 +158,7 @@
                         style="background-image: url({{ asset('tabler/static/avatars/000m.jpg') }})"></span>
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ Auth::guard('web')->user()->name }}</div>
-                        <div class="mt-1 small text-secondary">UI Designer</div>
+                        <div class="mt-1 small text-secondary">{{ Auth::guard('web')->user()->position }}</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

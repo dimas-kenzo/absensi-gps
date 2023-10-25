@@ -3,13 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PresensiController;
-
+use App\Http\Controllers\UserController;
 
 require __DIR__.'/auth.php';
 
 
 Route::middleware(['role:admin', 'auth'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin'])->name('dashboard.admin');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users/edit/{nik}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/delete/{nik}', [UserController::class, 'delete'])->name('users.delete');
 });
 
 
