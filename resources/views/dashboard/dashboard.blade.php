@@ -304,7 +304,7 @@
                                     <b>{{ $l->name }}</b> <br>
                                     <small class="text-muted">{{ $l->position }}</small>
                                 </div>
-                                <span class="badge {{ $l->check_in_time < "07.00" ? "bg-success" : "bg-danger" }}">{{ $l->check_in_time }}</span>
+                                <span class="badge {{ $l->check_in_time < "11.00" ? "bg-success" : "bg-danger" }}">{{ $l->check_in_time }}</span>
                             </div>
                         </div>
                     </li>

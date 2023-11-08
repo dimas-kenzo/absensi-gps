@@ -3,14 +3,11 @@
     <style>
         .icon-actions {
             display: flex;
-            /* Mengatur tampilan elemen dalam satu baris */
             align-items: center;
-            /* Mengatur ikon menjadi sejajar secara vertikal */
         }
 
         .icon-actions a {
             margin-right: 10px;
-            /* Memberi jarak antara ikon "Edit" dan "Hapus" */
         }
     </style>
     <div class="page-header d-print-none">
@@ -221,8 +218,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data"
-                        id="frmPegawai">
+                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data" id="frmPegawai">
                         @csrf
                         {{-- NIK --}}
                         <div class="row">
@@ -543,17 +539,6 @@
                 return false;
             }
 
-            // if (photo === "") {
-            //     Swal.fire({
-            //         title: 'Error!',
-            //         text: 'Foto harus diisi',
-            //         icon: 'error',
-            //         confirmButtonText: 'OK'
-            //     }).then((result) => {
-            //         $("#photo").focus();
-            //     });
-            //     return false;
-            // }
         });
 
         setTimeout(function() {

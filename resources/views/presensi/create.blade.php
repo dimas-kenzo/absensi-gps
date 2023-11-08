@@ -28,8 +28,7 @@
         }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin="" />
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @endsection
@@ -91,22 +90,44 @@
             navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
         }
 
+        // function successCallback(position) {
+        //     lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+        //     var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+        //     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //         maxZoom: 19,
+        //         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        //     }).addTo(map);
+        //     var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        //     // var circle = L.circle([-7.626136866059694, 109.58462431534495], { -7.6706688716518, 109.66083880761339
+        //     var circle = L.circle([-7.626136866059694, 109.58462431534495], {
+        //         color: 'red',
+        //         fillColor: '#f03',
+        //         fillOpacity: 0.5,
+        //         radius: 65
+        //     }).addTo(map);
+        // }
+
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+            var office_location = "{{ $office_loc->office_location }}";
+            var loc = office_location.split(",");
+            var lat_office = loc[0];
+            var long_office = loc[1];
+            var radius = {{ $office_loc->radius }}; 
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            // var circle = L.circle([-7.626136866059694, 109.58462431534495], { -7.6706688716518, 109.66083880761339
-            var circle = L.circle([-7.626136866059694, 109.58462431534495], {
+            var circle = L.circle([lat_office, long_office], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 65
+                radius: radius
             }).addTo(map);
         }
+
 
         function errorCallback(position) {
 

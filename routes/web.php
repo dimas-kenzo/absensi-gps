@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\UserController;
 
@@ -17,6 +18,18 @@ Route::middleware(['role:admin', 'auth'])->group(function () {
     Route::post('/users/delete/{nik}', [UserController::class, 'delete'])->name('users.delete');
     Route::get('/presensi-monitoring', [PresensiController::class, 'monitoring'])->name('presensi.monitoring');
     Route::post('/getpresensi', [PresensiController::class, 'presensi'])->name('get.presensi');
+    Route::post('/tampil', [PresensiController::class, 'tampil'])->name('tampil');
+    Route::get('/presensi/laporan', [PresensiController::class, 'laporan'])->name('presensi.laporan');
+    Route::post('/presensi/cetak-laporan', [PresensiController::class, 'cetak'])->name('presensi.cetak');
+    Route::get('/presensi/rekap', [PresensiController::class, 'rekap'])->name('presensi.rekap');
+    Route::post('/presensi/cetakRekap', [PresensiController::class, 'cetakRekap'])->name('presensi.cetakRekap');
+    Route::get('/konfigurasi', [LocationController::class, 'index'])->name('location.config');
+    Route::post('/konfigurasi/store', [LocationController::class, 'store'])->name('location.store');
+    Route::post('/konfigurasi/edit', [LocationController::class, 'edit'])->name('location.edit');
+    Route::post('/konfigurasi/edit/{id}', [LocationController::class, 'update'])->name('location.update');
+    Route::post('/konfigurasi/delete/{id}', [LocationController::class, 'delete'])->name('location.delete');
+
+
 });
 
 

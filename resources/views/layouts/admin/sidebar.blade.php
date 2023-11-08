@@ -376,82 +376,8 @@
                   <a class="dropdown-item" href="{{ route('users.index') }}">
                     Data Pegawai
                   </a>
-                  {{-- <a class="dropdown-item" href="./cookie-banner.html">
-                    Cookie banner
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./chat.html">
-                    Chat
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./activity.html">
-                    Activity
-                  </a>
-                  <a class="dropdown-item" href="./gallery.html">
-                    Gallery
-                  </a>
-                  <a class="dropdown-item" href="./invoice.html">
-                    Invoice
-                  </a>
-                  <a class="dropdown-item" href="./search-results.html">
-                    Search results
-                  </a>
-                  <a class="dropdown-item" href="./pricing.html">
-                    Pricing cards
-                  </a>
-                  <a class="dropdown-item" href="./pricing-table.html">
-                    Pricing table
-                  </a>
-                  <a class="dropdown-item" href="./faq.html">
-                    FAQ
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./users.html">
-                    Users
-                  </a>
-                  <a class="dropdown-item" href="./license.html">
-                    License
-                  </a>
-                </div>
-                <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="./logs.html">
-                    Logs
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./music.html">
-                    Music
-                  </a>
-                  <a class="dropdown-item" href="./photogrid.html">
-                    Photogrid
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./tasks.html">
-                    Tasks
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./uptime.html">
-                    Uptime monitor
-                  </a>
-                  <a class="dropdown-item" href="./widgets.html">
-                    Widgets
-                  </a>
-                  <a class="dropdown-item" href="./wizard.html">
-                    Wizard
-                  </a>
-                  <a class="dropdown-item" href="./settings.html">
-                    Settings
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./trial-ended.html">
-                    Trial ended
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./job-listing.html">
+                  {{-- <a class="dropdown-item" href="./job-listing.html">
                     Job listing
-                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                  </a>
-                  <a class="dropdown-item" href="./page-loader.html">
-                    Page loader
                     <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                   </a> --}}
                 </div>
@@ -473,6 +399,61 @@
                 Monitoring Presensi
               </span>
             </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+              <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clipboard-text" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                  <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                  <path d="M9 12h6"></path>
+                  <path d="M9 16h6"></path>
+               </svg>
+              </span>
+              <span class="nav-link-title">
+                Laporan
+              </span>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="{{ route('presensi.laporan') }}">
+                    Presensi
+                  </a>
+                  <a class="dropdown-item" href="{{ route('presensi.rekap') }}">
+                    Rekap Presensi
+                  </a>
+                  {{-- <a class="dropdown-item" href="./job-listing.html">
+                    Job listing
+                    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                  </a> --}}
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+              <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+               </svg>
+              </span>
+              <span class="nav-link-title">
+                Konfigurasi
+              </span>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item" href="{{ route('location.config') }}">
+                    Lokasi Kantor
+                  </a>
+                </div>
+              </div>
+            </div>
           </li>
           {{-- <li class="nav-item active dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="true" >

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,87 +36,49 @@ class UserController extends Controller
         $password = bcrypt($request->password);
         $no_hp = $request->no_hp;
         $position = $request->position;
-
+    
         if ($request->hasFile('photo')) {
             $photo = $nik . "." . $request->file('photo')->getClientOriginalExtension();
         } else {
             $photo = null;
         }
-
+    
         try {
-            $data = [
-                'nik' => $nik,
-                'name' => $name,
-                'email' => $email,
-                'password' => $password,
-                'no_hp' => $no_hp,
-                'position' => $position,
-                'photo' => $photo,
-                'role_id' => 2,
-            ];
+            $user = new User; // Buat instance model User
+    
+            $user->nik = $nik;
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = $password;
+            $user->no_hp = $no_hp;
+            $user->position = $position;
+            $user->photo = $photo;
+            $user->role_id = 2;
+    
+            $user->save(); // Simpan data ke database
 
-            $simpan = DB::table('users')->insert($data);
-            if ($simpan) {
-                if ($request->hasFile('photo')) {
-                    $folderPath = "public/uploads/users/";
-                    $request->file('photo')->storeAs($folderPath, $photo);
-                }
-                return redirect()->back()->with(['success' => 'Data Berhasil Di Simpan']);
+            $roleGuest = Role::where('name', 'guest')->first();
+            $user->assignRole($roleGuest);
+    
+    
+            if ($request->hasFile('photo')) {
+                $folderPath = "public/uploads/users/";
+                $request->file('photo')->storeAs($folderPath, $photo);
             }
+    
+            return redirect()->back()->with(['success' => 'Data Berhasil Di Simpan']);
         } catch (\Exception $e) {
             // dd($e);
             return redirect()->back()->with(['warning' => 'Data Gagal Di Simpan']);
         }
     }
-
+    
     public function edit(Request $request)
     {
         $nik = $request->nik;
         $user = DB::table('users')->where('nik', $nik)->first();
         return view('users.edit', compact('user'));
     }
-
-    // public function update(Request $request, $nik)
-    // {
-    //     $nik = $request->nik;
-    //     $name = $request->name;
-    //     $email = $request->email;
-    //     $no_hp = $request->no_hp;
-    //     $position = $request->position;
-
-    //     // Mungkin Anda ingin melakukan validasi tambahan di sini sebelum melanjutkan
-
-    //     $data = [
-    //         'nik' => $nik,
-    //         'name' => $name,
-    //         'email' => $email,
-    //         'no_hp' => $no_hp,
-    //         'position' => $position,
-    //     ];
-
-    //     if ($request->hasFile('photo')) {
-    //         $photo = $nik . "." . $request->file('photo')->getClientOriginalExtension();
-    //         $data['photo'] = $photo;
-
-    //         $folderPath = "public/uploads/users/";
-
-    //         // Simpan berkas foto baru
-    //         $request->file('photo')->storeAs($folderPath, $photo);
-    //     }
-
-    //     try {
-    //         $update = DB::table('users')
-    //             ->where('nik', $nik)
-    //             ->update($data);
-
-    //         if ($update) {
-    //             return redirect()->back()->with(['success' => 'Data Berhasil Diperbarui']);
-    //         }
-    //     } catch (\Exception $e) {
-    //         // dd($e);
-    //         return redirect()->back()->with(['warning' => 'Data Gagal Diperbarui']);
-    //     }
-    // }
 
     public function update(Request $request, $nik)
     {

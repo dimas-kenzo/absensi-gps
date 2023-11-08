@@ -1,5 +1,4 @@
-<form action="{{ route('users.update', ['nik' => $user->nik]) }}" method="POST" enctype="multipart/form-data"
-    id="frmPegawai">
+<form action="{{ route('users.update', ['nik' => $user->nik]) }}" method="POST" enctype="multipart/form-data" id="frmPegawai">
     @csrf
     {{-- NIK --}}
     <div class="row">

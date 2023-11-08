@@ -24,8 +24,15 @@ class DashboardController extends Controller
             ->orderBy('attendance_date')
             ->get();
 
+        // $rekapPresensi = DB::table('presensi')
+        //     ->selectRaw('COUNT(email) as jmlHadir, SUM(IF(check_in_time < "11.00",1,0)) as jmlTelat')
+        //     ->where('email',$email)
+        //     ->whereRaw('MONTH(attendance_date)="'.$bulanIni.'"')
+        //     ->whereRaw('YEAR(attendance_date)="'.$tahunIni.'"')
+        //     ->first();
+
         $rekapPresensi = DB::table('presensi')
-            ->selectRaw('COUNT(email) as jmlHadir, SUM(IF(check_in_time > "07.00",1,0)) as jmlTelat')
+            ->selectRaw('COUNT(email) as jmlHadir, SUM(IF(check_in_time >= "07.00",1,0)) as jmlTelat')
             ->where('email',$email)
             ->whereRaw('MONTH(attendance_date)="'.$bulanIni.'"')
             ->whereRaw('YEAR(attendance_date)="'.$tahunIni.'"')
@@ -53,7 +60,7 @@ class DashboardController extends Controller
     {
         $hariIni = date("Y-m-d");
         $rekapPresensi = DB::table('presensi')
-            ->selectRaw('COUNT(email) as jmlHadir, SUM(IF(check_in_time > "07.00",1,0)) as jmlTelat')
+            ->selectRaw('COUNT(email) as jmlHadir, SUM(IF(check_in_time >= "07.00",1,0)) as jmlTelat')
             ->where('attendance_date',$hariIni)
             ->first();
 

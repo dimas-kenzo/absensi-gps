@@ -1,7 +1,5 @@
 @extends('layouts.admin.tabler')
-@section('css')
-    
-@endsection
+
 @section('content')
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -38,7 +36,7 @@
                                             <path d="M12 15v3"></path>
                                         </svg>
                                     </span>
-                                    <input type="text" id="tanggal" name="tanggal" value="" class="form-control" autocomplete="off" placeholder="Silahkan Pilih Tanggal">
+                                    <input type="text" id="tanggal" value="{{ date("Y-m-d") }}" name="tanggal" value="" class="form-control" autocomplete="off" placeholder="Silahkan Pilih Tanggal">
                                 </div>
                             </div>
                             <div class="row">
@@ -55,6 +53,7 @@
                                                 <th>Jam Pulang</th>
                                                 <th>Foto Pulang</th>
                                                 <th>Keterangan</th>
+                                                <th>Map</th>
                                             </tr>
                                         </thead>
                                         <tbody id="loadPresensi">
@@ -65,6 +64,23 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modalShowMap" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lokasi Presensi User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loadMap">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    {{-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button> --}}
                 </div>
             </div>
         </div>
@@ -80,8 +96,8 @@
             })
         });
 
-        $("#tanggal").change(function(e) {
-            var tanggal = $(this).val();
+        function loadPresensi() {
+            var tanggal = $('#tanggal').val();
             $.ajax({
                 type: "POST",
                 url: "/getpresensi",
@@ -94,6 +110,10 @@
                    $("#loadPresensi").html(respond); 
                 }
             })
+        }
+        $("#tanggal").change(function(e) {
+            loadPresensi(); // reload
         })
+        loadPresensi(); 
     </script>
 @endpush

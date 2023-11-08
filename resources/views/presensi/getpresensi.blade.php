@@ -1,3 +1,19 @@
+@php
+    function selisih($jam_masuk, $jam_keluar)
+    {
+        list($h, $m, $s) = explode(":", $jam_masuk);
+        $dtAwal = mktime($h, $m, $s, "1", "1", "1");
+        list($h, $m, $s) = explode(":", $jam_keluar);
+        $dtAkhir = mktime($h, $m, $s, "1", "1", "1");
+        $dtSelisih = $dtAkhir - $dtAwal;
+        $totalmenit = $dtSelisih / 60;
+        $jam = explode(".", $totalmenit / 60);
+        $sisamenit = ($totalmenit / 60) - $jam[0];
+        $sisamenit2 = $sisamenit * 60;
+        $jml_jam = $jam[0];
+        return $jml_jam . ":" . round($sisamenit2);
+    }
+@endphp
 @foreach ($presensi as $p)
     @php
         $masuk = Storage::url('public/uploads/absensi/' . $p->photo_in);
@@ -17,7 +33,7 @@
                 <img src="{{ url($path) }}" alt="" class="avatar">
             @endif
         </td>
-        <td>{!! $p->check_out_time != null ? $p->check_out_time : '<span class="badge bg-danger">Belum Absen</span>' !!}</td>
+        <td>{!! $p->check_out_time != null ? $p->check_out_time : '<span class="badge bg-danger text-white">Belum Absen</span>' !!}</td>
         <td>
             @if ($p->check_out_time != null)
                 <img src="{{ url($keluar) }}" class="avatar" alt="">
@@ -36,10 +52,41 @@
         </td>
         <td>
             @if ($p->check_in_time >= '07:00')
-                <span class="badge bg-danger text-white">Terlambat</span>
+                @php
+                    $jam_terlambat = selisih('07:00:00', $p->check_in_time)
+                @endphp
+                <span class="badge bg-danger text-white">Terlambat {{ $jam_terlambat }}</span>
             @else
                 <span class="badge bg-success text-white">Tepat Waktu</span>
             @endif
         </td>
+        <td>
+            <a href="#" class="d-flex justify-content-center tampilPeta" id="{{ $p->id }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-location-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M20.891 2.006l.106 -.006l.13 .008l.09 .016l.123 .035l.107 .046l.1 .057l.09 .067l.082 .075l.052 .059l.082 .116l.052 .096c.047 .1 .077 .206 .09 .316l.005 .106c0 .075 -.008 .149 -.024 .22l-.035 .123l-6.532 18.077a1.55 1.55 0 0 1 -1.409 .903a1.547 1.547 0 0 1 -1.329 -.747l-.065 -.127l-3.352 -6.702l-6.67 -3.336a1.55 1.55 0 0 1 -.898 -1.259l-.006 -.149c0 -.56 .301 -1.072 .841 -1.37l.14 -.07l18.017 -6.506l.106 -.03l.108 -.018z" stroke-width="0" fill="currentColor"></path>
+                 </svg>
+            </a>
+        </td>
     </tr>
 @endforeach
+<script>
+    $(function(){
+        $(".tampilPeta").click(function(e){
+            var id = $(this).attr("id");
+            $.ajax({
+                type: 'POST',
+                url: '/tampil',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                },
+                cache: false,
+                success: function(respond){
+                    $("#loadMap").html(respond);
+                }
+            })
+            $("#modalShowMap").modal("show");
+        })
+    })
+</script>
